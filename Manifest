@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rbac-batman
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Redbeard-13/rbac-batman
+    targetRevision: main
+    path: rbac-batman
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: batman
+  syncPolicy:
+    automated:
+      prune: true           # удалять ресурсы, которых нет в Git
+      selfHeal: true        # откатывать ручные правки к Git-состоянию
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - Replace=true        # перезаписывать объект целиком (удобно для RBAC/subjects)
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+  orphanedResources:
+    warn: true              # подсвечивать "сирот" (ресурсы не из Git)
