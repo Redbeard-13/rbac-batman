@@ -5,3 +5,4 @@ resources:
   - namespace.yaml
   - role-batman-vm-ops.yaml
   - rolebinding-batman-vm-ops.yaml
+  - rolebinding-batman-view.yaml 
